@@ -1,0 +1,66 @@
+@page
+@model CS360DatabaseProject.Pages.InventoryPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].Make)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].ScoreID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].BasePrice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Inventory) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Make)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ScoreID)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.BasePrice)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.CarID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.CarID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.CarID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

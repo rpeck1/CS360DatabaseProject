@@ -1,0 +1,62 @@
+@page
+@model CS360DatabaseProject.Pages.InventoryPages.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Inventory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Inventory.CarID" />
+            <div class="form-group">
+                <label asp-for="Inventory.Make" class="control-label"></label>
+                <input asp-for="Inventory.Make" class="form-control" />
+                <span asp-validation-for="Inventory.Make" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Inventory.Model" class="control-label"></label>
+                <input asp-for="Inventory.Model" class="form-control" />
+                <span asp-validation-for="Inventory.Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Inventory.Year" class="control-label"></label>
+                <input asp-for="Inventory.Year" class="form-control" />
+                <span asp-validation-for="Inventory.Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Inventory.Color" class="control-label"></label>
+                <input asp-for="Inventory.Color" class="form-control" />
+                <span asp-validation-for="Inventory.Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Inventory.ScoreID" class="control-label"></label>
+                <select asp-for="Inventory.ScoreID" asp-items="Model.ScoreOptions" class="form-control">
+                    <option value="">-- Select Score --</option>
+                </select>
+                <span asp-validation-for="Inventory.ScoreID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Inventory.BasePrice" class="control-label"></label>
+                <input asp-for="Inventory.BasePrice" class="form-control" />
+                <span asp-validation-for="Inventory.BasePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

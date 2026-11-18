@@ -1,0 +1,44 @@
+@page
+@model CS360DatabaseProject.Pages.PendingOrders.PendingOrdersPages.IndexModel
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>@Html.DisplayNameFor(model => model.PendingOrders[0].OrderID)</th>
+			<th>@Html.DisplayNameFor(model => model.PendingOrders[0].UserID)</th>
+			<th>@Html.DisplayNameFor(model => model.PendingOrders[0].CarID)</th>
+			<th>@Html.DisplayNameFor(model => model.PendingOrders[0].AddOns)</th>
+			<th>@Html.DisplayNameFor(model => model.PendingOrders[0].ETA)</th>
+			<th>@Html.DisplayNameFor(model => model.PendingOrders[0].InStock)</th>
+			<th>@Html.DisplayNameFor(model => model.PendingOrders[0].Address)</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+@foreach (var item in Model.PendingOrders) {
+		<tr>
+			<td>@Html.DisplayFor(modelItem => item.OrderID)</td>
+			<td>@Html.DisplayFor(modelItem => item.UserID)</td>
+			<td>@Html.DisplayFor(modelItem => item.CarID)</td>
+			<td>@Html.DisplayFor(modelItem => item.AddOns)</td>
+			<td>@Html.DisplayFor(modelItem => item.ETA)</td>
+			<td>@Html.DisplayFor(modelItem => item.InStock)</td>
+			<td>@Html.DisplayFor(modelItem => item.Address)</td>
+			<td>
+				<a asp-page="./Edit" asp-route-id="@item.OrderID">Edit</a> |
+				<a asp-page="./Details" asp-route-id="@item.OrderID">Details</a> |
+				<a asp-page="./Delete" asp-route-id="@item.OrderID">Delete</a>
+			</td>
+		</tr>
+}
+	</tbody>
+</table>

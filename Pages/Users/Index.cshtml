@@ -1,0 +1,44 @@
+@page
+@model CS360DatabaseProject.Pages.Users.IndexModel
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>@Html.DisplayNameFor(model => model.Users[0].User_ID)</th>
+			<th>@Html.DisplayNameFor(model => model.Users[0].Fname)</th>
+			<th>@Html.DisplayNameFor(model => model.Users[0].Lname)</th>
+			<th>@Html.DisplayNameFor(model => model.Users[0].Email)</th>
+			<th>@Html.DisplayNameFor(model => model.Users[0].Active)</th>
+			<th>@Html.DisplayNameFor(model => model.Users[0].Created_at)</th>
+			<th>@Html.DisplayNameFor(model => model.Users[0].Last_Used_at)</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+@foreach (var item in Model.Users) {
+		<tr>
+			<td>@Html.DisplayFor(modelItem => item.User_ID)</td>
+			<td>@Html.DisplayFor(modelItem => item.Fname)</td>
+			<td>@Html.DisplayFor(modelItem => item.Lname)</td>
+			<td>@Html.DisplayFor(modelItem => item.Email)</td>
+			<td>@Html.DisplayFor(modelItem => item.Active)</td>
+			<td>@Html.DisplayFor(modelItem => item.Created_at)</td>
+			<td>@Html.DisplayFor(modelItem => item.Last_Used_at)</td>
+			<td>
+				<a asp-page="./Edit" asp-route-id="@item.User_ID">Edit</a> |
+				<a asp-page="./Details" asp-route-id="@item.User_ID">Details</a> |
+				<a asp-page="./Delete" asp-route-id="@item.User_ID">Delete</a>
+			</td>
+		</tr>
+}
+	</tbody>
+</table>

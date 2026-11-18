@@ -1,0 +1,29 @@
+@page
+@model CS360DatabaseProject.Pages.Users.EditModel
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Users</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="UserRecord.User_ID" />
+			<div class="form-group"><label asp-for="UserRecord.Fname" class="control-label"></label><input asp-for="UserRecord.Fname" class="form-control" /><span asp-validation-for="UserRecord.Fname" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="UserRecord.Lname" class="control-label"></label><input asp-for="UserRecord.Lname" class="form-control" /><span asp-validation-for="UserRecord.Lname" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="UserRecord.Email" class="control-label"></label><input asp-for="UserRecord.Email" class="form-control" /><span asp-validation-for="UserRecord.Email" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="UserRecord.Password_hash" class="control-label"></label><input asp-for="UserRecord.Password_hash" class="form-control" /><span asp-validation-for="UserRecord.Password_hash" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="UserRecord.Active" class="control-label"></label><input asp-for="UserRecord.Active" class="form-control" /><span asp-validation-for="UserRecord.Active" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="UserRecord.Created_at" class="control-label"></label><input asp-for="UserRecord.Created_at" class="form-control" /><span asp-validation-for="UserRecord.Created_at" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="UserRecord.Last_Used_at" class="control-label"></label><input asp-for="UserRecord.Last_Used_at" class="form-control" /><span asp-validation-for="UserRecord.Last_Used_at" class="text-danger"></span></div>
+			<div class="form-group"><input type="submit" value="Save" class="btn btn-primary" /></div>
+		</form>
+	</div>
+</div>
+
+<div><a asp-page="./Index">Back to List</a></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

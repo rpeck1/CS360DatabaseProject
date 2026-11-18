@@ -1,0 +1,32 @@
+@page
+@model CS360DatabaseProject.Pages.PendingOrders.PendingOrdersPages.CreateModel
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>PendingOrders</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group"><label asp-for="PendingOrders.OrderID" class="control-label"></label><input asp-for="PendingOrders.OrderID" class="form-control" /><span asp-validation-for="PendingOrders.OrderID" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="PendingOrders.UserID" class="control-label"></label><select asp-for="PendingOrders.UserID" asp-items="Model.UserOptions" class="form-control"><option value="">-- Select User --</option></select><span asp-validation-for="PendingOrders.UserID" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="PendingOrders.CarID" class="control-label"></label><select asp-for="PendingOrders.CarID" asp-items="Model.CarOptions" class="form-control"><option value="">-- Select Car --</option></select><span asp-validation-for="PendingOrders.CarID" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="PendingOrders.AddOns" class="control-label"></label><input asp-for="PendingOrders.AddOns" class="form-control" /><span asp-validation-for="PendingOrders.AddOns" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="PendingOrders.ETA" class="control-label"></label><input asp-for="PendingOrders.ETA" class="form-control" /><span asp-validation-for="PendingOrders.ETA" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="PendingOrders.InStock" class="control-label"></label><input asp-for="PendingOrders.InStock" class="form-control" /><span asp-validation-for="PendingOrders.InStock" class="text-danger"></span></div>
+			<div class="form-group"><label asp-for="PendingOrders.Address" class="control-label"></label><input asp-for="PendingOrders.Address" class="form-control" /><span asp-validation-for="PendingOrders.Address" class="text-danger"></span></div>
+			<div class="form-group"><input type="submit" value="Create" class="btn btn-primary" /></div>
+		</form>
+	</div>
+</div>
+
+<div><a asp-page="./Index">Back to List</a></div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
