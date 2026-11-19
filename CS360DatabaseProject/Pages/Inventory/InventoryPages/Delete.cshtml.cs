@@ -46,13 +46,20 @@ public class DeleteModel : PageModel
         }
 
         var inventory = await _context.Inventory.FindAsync(id);
-        if (inventory != null)
+        if (inventory is null)
         {
-            Inventory = inventory;
-            _context.Inventory.Remove(Inventory);
-            await _context.SaveChangesAsync();
+            return NotFound();
         }
 
+        if (await _context.PendingOrders.AnyAsync(order => order.CarID == id))
+        {
+            Inventory = inventory;
+            ModelState.AddModelError(string.Empty, "This vehicle cannot be deleted while pending orders reference it.");
+            return Page();
+        }
+
+        _context.Inventory.Remove(inventory);
+        await _context.SaveChangesAsync();
         return RedirectToPage("./Index");
     }
 }
