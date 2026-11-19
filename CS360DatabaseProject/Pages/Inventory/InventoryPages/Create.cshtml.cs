@@ -16,19 +16,15 @@ public class CreateModel : PageModel
         _context = context;
     }
 
-    public IActionResult OnGet()
-    {
-        return Page();
-    }
-
     [BindProperty]
     public InventoryModel Inventory { get; set; } = default!;
 
     public IEnumerable<SelectListItem> ScoreOptions { get; set; } = [];
 
-    public async Task OnGetAsync()
+    public async Task<IActionResult> OnGetAsync()
     {
         await LoadScoreOptionsAsync();
+        return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
