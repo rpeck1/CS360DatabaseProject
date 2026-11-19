@@ -19,6 +19,9 @@ public class EditModel : PageModel
     [BindProperty]
     public PendingOrdersModel PendingOrders { get; set; } = default!;
 
+    [BindProperty]
+    public string OriginalOrderID { get; set; } = string.Empty;
+
     public IEnumerable<SelectListItem> UserOptions { get; set; } = [];
 
     public IEnumerable<SelectListItem> CarOptions { get; set; } = [];
@@ -36,13 +39,21 @@ public class EditModel : PageModel
             return NotFound();
         }
 
+        OriginalOrderID = PendingOrders.OrderID;
         await LoadOptionsAsync();
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(string? id)
+    public async Task<IActionResult> OnPostAsync()
     {
-        if (id is null || id != PendingOrders.OrderID)
+        if (string.IsNullOrWhiteSpace(OriginalOrderID))
+        {
+            return NotFound();
+        }
+
+        var existingOrder = await _context.PendingOrders
+            .FirstOrDefaultAsync(order => order.OrderID == OriginalOrderID);
+        if (existingOrder is null)
         {
             return NotFound();
         }
@@ -53,8 +64,45 @@ public class EditModel : PageModel
             return Page();
         }
 
-        _context.Attach(PendingOrders).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        if (PendingOrders.OrderID != OriginalOrderID &&
+            await _context.PendingOrders.AnyAsync(order => order.OrderID == PendingOrders.OrderID))
+        {
+            ModelState.AddModelError("PendingOrders.OrderID", "That order ID is already in use.");
+            await LoadOptionsAsync();
+            return Page();
+        }
+
+        if (PendingOrders.OrderID == OriginalOrderID)
+        {
+            existingOrder.UserID = PendingOrders.UserID;
+            existingOrder.CarID = PendingOrders.CarID;
+            existingOrder.AddOns = PendingOrders.AddOns;
+            existingOrder.ETA = PendingOrders.ETA;
+            existingOrder.InStock = PendingOrders.InStock;
+            existingOrder.Address = PendingOrders.Address;
+            await _context.SaveChangesAsync();
+        }
+        else
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            var replacement = new PendingOrdersModel
+            {
+                OrderID = PendingOrders.OrderID,
+                UserID = PendingOrders.UserID,
+                CarID = PendingOrders.CarID,
+                AddOns = PendingOrders.AddOns,
+                ETA = PendingOrders.ETA,
+                InStock = PendingOrders.InStock,
+                Address = PendingOrders.Address
+            };
+
+            _context.PendingOrders.Add(replacement);
+            await _context.SaveChangesAsync();
+            _context.PendingOrders.Remove(existingOrder);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+
         return RedirectToPage("./Index");
     }
 

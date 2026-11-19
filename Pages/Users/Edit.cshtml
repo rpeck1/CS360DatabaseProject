@@ -12,7 +12,8 @@
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<input type="hidden" asp-for="User.User_ID" />
+			<input type="hidden" asp-for="OriginalUserID" />
+			<div class="form-group"><label asp-for="User.User_ID" class="control-label"></label><input asp-for="User.User_ID" class="form-control" /><span asp-validation-for="User.User_ID" class="text-danger"></span></div>
 			<div class="form-group"><label asp-for="User.Fname" class="control-label"></label><input asp-for="User.Fname" class="form-control" /><span asp-validation-for="User.Fname" class="text-danger"></span></div>
 			<div class="form-group"><label asp-for="User.Lname" class="control-label"></label><input asp-for="User.Lname" class="form-control" /><span asp-validation-for="User.Lname" class="text-danger"></span></div>
 			<div class="form-group"><label asp-for="User.Email" class="control-label"></label><input asp-for="User.Email" class="form-control" /><span asp-validation-for="User.Email" class="text-danger"></span></div>

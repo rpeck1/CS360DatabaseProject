@@ -19,6 +19,9 @@ public class EditModel : PageModel
     [BindProperty]
     public InventoryModel Inventory { get; set; } = default!;
 
+    [BindProperty]
+    public string OriginalCarID { get; set; } = string.Empty;
+
     public IEnumerable<SelectListItem> ScoreOptions { get; set; } = [];
 
     public async Task<IActionResult> OnGetAsync(string? id)
@@ -34,36 +37,71 @@ public class EditModel : PageModel
             return NotFound();
         }
         Inventory = inventory;
+        OriginalCarID = inventory.CarID;
         await LoadScoreOptionsAsync();
         return Page();
     }
 
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync()
     {
+        if (string.IsNullOrWhiteSpace(OriginalCarID))
+        {
+            return NotFound();
+        }
+
+        var existingInventory = await _context.Inventory
+            .FirstOrDefaultAsync(car => car.CarID == OriginalCarID);
+        if (existingInventory is null)
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
             await LoadScoreOptionsAsync();
             return Page();
         }
 
-        _context.Attach(Inventory).State = EntityState.Modified;
-
-        try
+        if (Inventory.CarID != OriginalCarID &&
+            await _context.Inventory.AnyAsync(car => car.CarID == Inventory.CarID))
         {
+            ModelState.AddModelError("Inventory.CarID", "That vehicle ID is already in use.");
+            await LoadScoreOptionsAsync();
+            return Page();
+        }
+
+        if (Inventory.CarID == OriginalCarID)
+        {
+            existingInventory.Make = Inventory.Make;
+            existingInventory.Model = Inventory.Model;
+            existingInventory.Year = Inventory.Year;
+            existingInventory.Color = Inventory.Color;
+            existingInventory.ScoreID = Inventory.ScoreID;
+            existingInventory.BasePrice = Inventory.BasePrice;
             await _context.SaveChangesAsync();
         }
-        catch (DbUpdateConcurrencyException)
+        else
         {
-            if (!InventoryExists(Inventory.CarID))
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            var replacement = new InventoryModel
             {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
+                CarID = Inventory.CarID,
+                Make = Inventory.Make,
+                Model = Inventory.Model,
+                Year = Inventory.Year,
+                Color = Inventory.Color,
+                ScoreID = Inventory.ScoreID,
+                BasePrice = Inventory.BasePrice
+            };
+
+            _context.Inventory.Add(replacement);
+            await _context.SaveChangesAsync();
+            await _context.PendingOrders
+                .Where(order => order.CarID == OriginalCarID)
+                .ExecuteUpdateAsync(update => update.SetProperty(order => order.CarID, Inventory.CarID));
+            _context.Inventory.Remove(existingInventory);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
         }
 
         return RedirectToPage("./Index");
@@ -82,8 +120,4 @@ public class EditModel : PageModel
             .ToListAsync();
     }
 
-    private bool InventoryExists(string id)
-    {
-        return _context.Inventory.Any(e => e.CarID == id);
-    }
 }
