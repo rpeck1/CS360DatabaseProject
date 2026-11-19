@@ -4,7 +4,34 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-4">
+    <h1 class="display-4">Database Tables</h1>
+    <p class="lead">Choose a table to view and manage.</p>
+</div>
+
+<div class="row g-3">
+    <div class="col-sm-6 col-lg-4">
+        <a class="card h-100 text-decoration-none text-dark" asp-page="/Inventory/InventoryPages/Index">
+            <div class="card-body text-center">
+                <h2 class="h4 card-title">Inventory</h2>
+                <p class="card-text">View vehicle inventory.</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <a class="card h-100 text-decoration-none text-dark" asp-page="/PendingOrders/PendingOrdersPages/Index">
+            <div class="card-body text-center">
+                <h2 class="h4 card-title">Pending Orders</h2>
+                <p class="card-text">View pending customer orders.</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <a class="card h-100 text-decoration-none text-dark" asp-page="/Users/UsersPages/Index">
+            <div class="card-body text-center">
+                <h2 class="h4 card-title">Users</h2>
+                <p class="card-text">View registered users.</p>
+            </div>
+        </a>
+    </div>
 </div>
