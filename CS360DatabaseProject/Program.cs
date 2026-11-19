@@ -2,7 +2,10 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("CS360DatabaseProjectContext") ?? throw new InvalidOperationException("Connection string 'CS360DatabaseProjectContext' not found.");
 
-builder.Services.AddDbContext<CS360DatabaseProjectContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<CS360DatabaseProjectContext>(options =>
+    options
+        .UseSqlServer(connectionString)
+        .LogTo(Console.WriteLine));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
